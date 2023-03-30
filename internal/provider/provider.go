@@ -29,11 +29,27 @@ func init() {
 func New(version string) func() *schema.Provider {
 	return func() *schema.Provider {
 		p := &schema.Provider{
-			DataSourcesMap: map[string]*schema.Resource{
-				"scaffolding_data_source": dataSourceScaffolding(),
-			},
-			ResourcesMap: map[string]*schema.Resource{
-				"scaffolding_resource": resourceScaffolding(),
+			Schema: map[string]*schema.Schema{
+				"access_key": {
+					Type:        schema.TypeString,
+					Required:    true,
+					Description: "Some fake access key",
+					Sensitive:   true,
+				},
+				"nested_config": {
+					Type:     schema.TypeList,
+					MaxItems: 1,
+					Elem: &schema.Resource{
+						Schema: map[string]*schema.Schema{
+							"nested_access_key": {
+								Type:        schema.TypeString,
+								Required:    true,
+								Description: "Some fake nested access key",
+								Sensitive:   true,
+							},
+						},
+					},
+				},
 			},
 		}
 
